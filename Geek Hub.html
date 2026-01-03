@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Geek Bub</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 18px;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+    }
+    .subject { background: #00bcd4; }
+    .option { background: #333; width: 200px; }
+    .correct { background: green; }
+    .wrong { background: red; }
+    #quiz { display: none; }
+  </style>
+</head>
+<body>
+
+<h1>🧠 Geek Hub</h1>
+
+<div id="home">
+  <h2>Select a Subject</h2>
+  <button class="subject" onclick="startQuiz('chem')">Chemistry</button>
+  <button class="subject" onclick="startQuiz('math')">Math</button>
+  <button class="subject" onclick="startQuiz('phy')">Physics</button>
+  <button class="subject" onclick="startQuiz('bio')">Biology</button>
+</div>
+
+<div id="quiz">
+  <h2 id="question"></h2>
+  <div id="options"></div>
+  <p id="score"></p>
+  <button onclick="goHome()">Home</button>
+</div>
+
+<script>
+const quizzes = {
+  chem: [
+    { q: "Atomic number of Oxygen?", o: ["6", "7", "8", "10"], a: 2 }
+  ],
+  math: [
+    { q: "5 × 6 = ?", o: ["11", "30", "56", "20"], a: 1 }
+  ],
+  phy: [
+    { q: "Unit of Force?", o: ["Joule", "Pascal", "Newton", "Watt"], a: 2 }
+  ],
+  bio: [
+    { q: "Powerhouse of the cell?", o: ["Nucleus", "Mitochondria", "Ribosome", "Chloroplast"], a: 1 }
+  ]
+};
+
+let currentQuiz, score = 0;
+
+function startQuiz(subject) {
+  currentQuiz = quizzes[subject][0];
+  score = 0;
+  document.getElementById("home").style.display = "none";
+  document.getElementById("quiz").style.display = "block";
+  showQuestion();
+}
+
+function showQuestion() {
+  document.getElementById("question").innerText = currentQuiz.q;
+  const optionsDiv = document.getElementById("options");
+  optionsDiv.innerHTML = "";
+
+  currentQuiz.o.forEach((opt, i) => {
+    const btn = document.createElement("button");
+    btn.innerText = opt;
+    btn.className = "option";
+    btn.onclick = () => checkAnswer(i, btn);
+    optionsDiv.appendChild(btn);
+  });
+}
+
+function checkAnswer(i, btn) {
+  if (i === currentQuiz.a) {
+    btn.classList.add("correct");
+    score++;
+  } else {
+    btn.classList.add("wrong");
+  }
+  document.getElementById("score").innerText = "Score: " + score;
+}
+
+function goHome() {
+  document.getElementById("quiz").style.display = "none";
+  document.getElementById("home").style.display = "block";
+  document.getElementById("score").innerText = "";
+}
+</script>
+
+</body>
+</html>
